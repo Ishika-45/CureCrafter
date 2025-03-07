@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar{
+  @apply hidden
+}
+.active{
+  padding:0.75rem 0.5rem 0.75rem 0.5rem;
+  text-decoration: underline;
+}
