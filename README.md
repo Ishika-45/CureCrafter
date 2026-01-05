@@ -56,7 +56,13 @@ git clone https://github.com/Ishika-45/curecrafter.git
 cd curecrafter
 npm install
 npm run dev
+```
 
+---
+
+👩‍💻 Author
+
+Ishika Bansal – Full-Stack MERN Developer
 
 
 
