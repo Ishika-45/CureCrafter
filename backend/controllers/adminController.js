@@ -60,21 +60,39 @@ const addDoctor = async (req, res) => {
 }
 
 const loginAdmin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-        if (email === adminEmail && password === adminPassword) {
-            const token = jwt.sign(email+password, process.env.JWT_SECRET);
-            res.status(200).json({ token }); 
-        }
-        else {
-            res.status(401).json({ message: 'Invalid admin credentials' });
-        }
-    } catch (error) {
-        console.error('Error logging in admin:', error);
-        res.status(500).json({ message: 'Server error' });
-    }   
-}
+  try {
+    const { email, password } = req.body;
+
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = jwt.sign(
+        { email, role: "admin" },   // ✅ payload must be object
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      return res.status(200).json({
+        success: true,              
+        token
+      });
+    } 
+    else {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid admin credentials"
+      });
+    }
+  } 
+  catch (error) {
+    console.error("Error logging in admin:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
 
 export { addDoctor, loginAdmin};
