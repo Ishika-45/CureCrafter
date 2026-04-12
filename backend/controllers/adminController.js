@@ -6,10 +6,10 @@ import jwt from 'jsonwebtoken';
 
 const addDoctor = async (req, res) => {
     try {
-        const {name, email, password, speciality, degree, experience, about, fees, address } = req.body;
+        const { name, email, password, specialization, education, experience, about, fees, address } = req.body;
         const imageFile = req.file;
 
-        if(!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address){
+        if (!name || !email || !password || !specialization || !education || !experience || !about || !fees || !address){
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -29,24 +29,26 @@ const addDoctor = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-            resource_type: "  image",
+            resource_type: "image",
             // folder: 'doctor_images',
         });
         const imageUrl = imageUpload.secure_url;
 
-        const doctorData = {
-            name,
-            email,
-            image: imageUrl,
-            password: hashedPassword,
-            speciality,
-            degree,
-            experience,
-            about,
-            fees,
-            address: JSON.parse(address),     //convert object to string
-            date: Date.now(),
-        };
+        const parsedAddress = JSON.parse(address);
+
+const doctorData = {
+  name,
+  email,
+  image: imageUrl,
+  password: hashedPassword,
+  speciality: specialization,
+degree: education,    
+  experience,
+  about,
+  fees,
+  address: parsedAddress,
+  date: Date.now(),
+};
 
         const newDoctor = new doctorModel(doctorData);
         await newDoctor.save();
