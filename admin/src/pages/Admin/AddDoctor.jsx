@@ -19,7 +19,6 @@ const AddDoctor = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    // Handle form submission here
     console.log({
       docImg,
       name,
